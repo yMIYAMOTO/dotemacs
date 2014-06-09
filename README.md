@@ -1,4 +1,3 @@
-^ -*- coding:utf-8 -*-
 dotemacs
 ========
 
@@ -18,5 +17,5 @@ dotemacs カスタマイズ
 # .emacs.d
 * $HOMEディレクトリに.emacs.dを置いたら使えるはず.
 
-* 但し、Proof GeneralとDDSKKのパスの設定は環境に合せて必要
+* 但し、Proof GeneralとDDSKKのパスの設定は環境に合せて修正が必要
   
