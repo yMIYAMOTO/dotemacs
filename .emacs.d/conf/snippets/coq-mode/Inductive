@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Inductive
+# key: Inductive
+# binding: C-c . i
+# --
+Inductive $1 : $2 :=
+| $3 : $1.

@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Lemma
+# key: Lemma
+# binding: C-c . l
+# --
+Lemma $1 :
+  $2
+Proof with eauto.
+  $0
+Qed.

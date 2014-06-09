@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: fun
+# key: fun
+# binding: C-. f
+# --
+fun $1 -> $2

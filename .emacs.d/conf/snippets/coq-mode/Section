@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Section
+# key: Section
+# binding: C-c . s
+# --
+Section $1.
+  $0
+End $1.

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: raise
+# key: raise
+# binding: C-. r
+# --
+raise $1

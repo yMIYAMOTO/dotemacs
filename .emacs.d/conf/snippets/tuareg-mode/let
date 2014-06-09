@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: let
+# key: let
+# binding: C-c . l
+# --
+let $1 in$0

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: record
+# key: record
+# binding: C-. r
+# --
+type $1 = {$2:$3; $0};;

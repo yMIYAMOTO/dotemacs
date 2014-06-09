@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Example
+# key: Example
+# binding: C-c . e
+# --
+Example $1:
+  $2.
+Proof.
+  $0
+Qed.

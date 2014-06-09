@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: module
+# key: module
+# binding: C-. m
+# --
+module ${1:Name$(upcase-initials yas-text)} =
+struct
+$0
+end;; (* $1 *)

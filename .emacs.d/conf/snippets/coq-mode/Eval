@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Eval
+# key: Eval
+# binding: C-c . e
+# --
+Eval compute in $1.$0

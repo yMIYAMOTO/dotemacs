@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Fixpoint
+# key: Fixpoint
+# binding: C-c . f
+# --
+Fixpoint $1 $2 : $3 :=
+  $0
+.

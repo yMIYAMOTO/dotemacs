@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: try-with
+# key: try-with
+# binding: C-c . t
+# --
+try $1 with
+| $2 -> $3

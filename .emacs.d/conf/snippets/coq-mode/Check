@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Check
+# key: Check
+# binding: C-c . c
+# --
+Check $1.
+$0

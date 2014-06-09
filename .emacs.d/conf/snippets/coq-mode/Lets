@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Lets
+# key: Lets
+# binding: C-c . l
+# --
+Lets $1 : $2 := $3.
+$0

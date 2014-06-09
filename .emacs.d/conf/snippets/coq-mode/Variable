@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Variable
+# key: Variable
+# binding: C-c . v
+# --
+Variable $1 : $2.

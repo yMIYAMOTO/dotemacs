@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: match
+# key: match
+# binding: C-c . m
+# --
+match $1 with
+	  | $2 => $3
+	  | $4 => $5
+end

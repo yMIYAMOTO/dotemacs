@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: signature
+# key: signature
+# binding: C-. s
+# --
+module type $1 =
+sig
+		$0
+end;;	(* $1 *)

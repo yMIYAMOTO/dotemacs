@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: Theorem
+# key: Theorem
+# binding: C-c . t
+# --
+Theorem $1 :
+  $2.
+Proof.
+  $0
+Qed.

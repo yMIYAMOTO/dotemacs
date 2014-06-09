@@ -1,0 +1,399 @@
+#+TITLE: Emacs Customize for Bigginers
+#+AUTHOR: Yohei MIYAMOTO
+#+STARTUP: showall
+#+LANGUAGE:ja
+#+OPTIONS: \n:nil creator:nil
+
+* Emacsのカスタマイズの勧め
+  [[file://image.png]]
+
+* 内容と対象
+  * Emacsのカスタマイズ方法とパッケージの紹介
+
+    * Emacs初心者向け(のつもり)
+    
+  * Emacsパワーユーザーの皆さんは色々教えて下さい
+
+  * VimとはEmacsの [[http://sssslide.com/www.slideshare.net/esehara/evil-is-justice-1][Evilモード]] のこと(Emacs原理主義)
+
+    * 昔Vimを使おうとして、挫折しました(だからdisる)
+
+    * [[http://sssslide.com/www.slideshare.net/nabe256/vim-15447981][Vimこわい]]
+
+
+* 自己紹介
+  * Emacs歴 3年ちょっと
+  
+  * [[http://www.slideshare.net/hayamiz/ss-14196977][ホモ・イーマックス]]
+
+  * init.el(.emacs)は約1200行
+
+  * lispが分らなくてもEmacsのカスタマイズはできる(はず？)
+    ([[http://d.hatena.ne.jp/rubikitch/20100201/elispsyntax][elisp最速マスター]] に目を通しておくと良いかも)
+
+  * [e]lispはあまり分からない
+  
+    * 分かる事
+
+      * ifなどの制御文，シンボル，変数・関数の評価方法
+    
+    * 分からない事
+    
+      * マクロ, Emacsの関数
+    
+    * [[https://www.google.co.jp/#q=括弧は空気%E3%80%80lisp][括弧は空気]] にはほど遠いです
+
+        
+* 今日の目標
+  * [[Http://nyan-mode.buildsomethingamazing.com/][nyan-mode]] が設定できるようになる
+
+    * "Nyan-mode. It's things like this that make me proud to be an emacs user." - mitchellh
+
+    * nyan-mode
+	    #+BEGIN_SRC elisp
+        (setq nyan-wavy-trail t)
+        (nyan-start-animation)
+	    #+END_SRC
+
+	* [[https://www.google.co.jp/#q=nyan+vim][Vimバージョン]] もあります
+
+	   
+* Helpの使い方
+  * Emacsのカスタマイズを行う際に一番最初に覚えること
+
+  * F1でヘルプが呼び出せます
+	  
+	  * C-hはdelete-backward-charに割り当ててますよね:-)
+
+	* f1-a, f1-d(documentのapropos), f1-k, f1-f, f1-v, f1-m, f1-b(キーバインド一覧) 
+
+
+* 導入(*scratch*で遊ぼう)
+ * M-x eval-last-exp(C-x C-e), M-x eval-buffer, M-x eval-regionで評価を行う
+
+ * M-:で実行もできる
+
+   * 謎の動作
+     #+BEGIN_SRC elisp
+     (zone)
+     #+END_SRC
+   * 疲れた時に
+     #+BEGIN_SRC elisp
+     (doctor)
+     #+END_SRC
+   * ハノイの塔とか
+     #+BEGIN_SRC elisp
+     (hanoi 3)
+     #+END_SRC
+   * ゲームとか
+     #+BEGIN_SRC elisp
+     (5x5)
+     #+END_SRC
+
+
+* .emacs.dとディレクトリ構成
+   * .emacs.dにすべてを集めてVCしたい
+     
+     * .emacs.d以下に次のディレクトリを配置
+     
+       * elisp, elpa, public_repos, conf
+     
+     * public_reposはgit submoduleで管理
+
+** magit
+   * Emacs上でgitの管理が行える
+
+     * bitbucketにpushしている
+
+     * gitのhookを設定して、pullした後はバイトコンパイル(init.elcを生成)
+
+       * 現状できてない,post-pull hookがない(post-mergeでできる？)
+
+
+* auto-installとパッケージ管理
+** package.el
+   * emacs24から入った新機能
+
+   * 説明は不要？
+   
+   * [[http://stackoverflow.com/questions/23306091/how-the-packages-installed-with-package-installelpa-in-emacs-are-loaded][packge-initialize でパッケージのイニシャライズを行う]]
+
+   #+BEGIN_SRC elisp
+     (when (locate-library "package")
+       
+       (eval-after-load "package"
+         '(progn
+            (mapc #'(lambda (x) (add-to-list 'package-archives x)) ;package の追加
+                  '(("marmalade" . "http://marmalade-repo.org/packages/")
+                    ("melpa" . "http://melpa.milkbox.net/packages/")
+                    ("MELPA" . "http://melpa.milkbox.net/packages/")))))
+       
+       (package-initialize))
+   #+END_SRC
+
+   * 例
+   #+BEGIN_SRC elisp
+     (list-packages)
+   #+END_SRC
+
+** auto-install.el
+   * パッケージに入っていないelispをインストールする場合はこれ
+
+   * Emacs Wikiやhtmlからインストール可能
+     
+   #+BEGIN_SRC elisp
+     (when (locate-library "auto-install")
+       
+       (eval-after-load "auto-install"
+         '(progn
+            (setq auto-install-directory "~/.emacs.d/elisp/" ;;インストール先を変更
+                  ediff-window-setup-function 'ediff-setup-windows-plain)
+            (auto-install-update-emacswiki-package-name t))) ;emacswikiのパッケージを更新
+       
+       (init-add-autoload "auto-install"
+                          '(auto-install-from-buffer
+                            auto-install-from-url
+                            auto-install-from-emacswiki
+                            auto-install-from-gist
+                            auto-install-from-library
+                            auto-install-from-directory
+                            auto-install-from-dired)))
+
+   * 例
+   #+BEGIN_SRC elisp
+     (auto-install-from-emacswiki)
+   #+END_SRC
+
+
+** emacs.d(init.el)編集のために
+*** paredit
+    * 独特な操作方法でlispの括弧の編集を楽にする
+
+*** lispxmp
+    * [e]lispの評価結果を自動で挿入してくれる
+
+*** auto-async-byte-compile
+    * elispを編集し保存たら自動的にコンパイルする
+
+
+* キーバインドの変更
+  * キーマップ一覧(f1-b)
+
+    * モード毎にキーマップが設定される(モードの名前+mode-map)
+    
+	* [[http://emacs.g.hatena.ne.jp/kiwanami/20110606/1307385847#][優先順位]] minor mode map > major mode map > global map
+     
+  * 設定方法
+   
+    * global-set-key, define-keyを使う 
+      
+      * kbdはescapeしたものを返す関数
+         
+        * (kbd C-.)は\C-.を返す
+
+      * define-keyはキーマップを引数にとる
+
+      * 例
+    	  #+BEGIN_SRC elisp
+        (global-set-key (kbd "C-.") 'redo)
+        (define-key tuareg-mode-map (kbd "C-:") 'tuareg-browse-library)
+	      #+END_SRC
+
+
+* フェイスの変更
+** 全体的な設定
+  * color-themeパッケージ
+    
+  * 24からはテーマフレームワークが標準で入っている
+     
+    * 色々なテーマがgithubの [[https://github.com/emacs-jp/replace-colorthemes][emacs-jpコミュニティ]] からcloneできる
+
+** 細かい設定
+  * フェイスとは表示の属性を決めるもの
+
+    * [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Face-Attributes.html#Face-Attributes][フェイスで設定できるもの]]
+   
+      * family, width, foreground, backgroundなど
+
+	* フェイスを調べる関数
+
+	  * M-x describe-face(ポイントのフェイスを表示) 
+
+	  * M-x list-faces-display(フェイスの一覧を表示)
+
+	* フェイスを設定する関数
+    
+	  * set-face-attribute, custom-set-facesのどちらかを使う
+   
+      * 設定項目はヘルプでset-face-attributeを調べる
+
+    * 使用できる色を調べる
+
+      * M-x list-colors-display(使用できる色の一覧を表示)
+
+  * 例
+	 #+BEGIN_SRC elisp
+     (when (load-theme 'dark-laptop t t)
+       (enable-theme 'dark-laptop)
+
+       (set-face-attribute 'default nil
+                           :family "MigMix 2M"
+                           :height 110)
+
+       (set-face-attribute 'font-lock-comment-face nil
+                           :foreground "turquoise")
+       
+       (set-face-foreground 'font-lock-builtin-face "magenta"))
+
+     (custom-set-faces
+     '(flymake-errline ((((class color))
+     (:background "LightYellow" :underline "OrangeRed"))))
+     '(flymake-warnline ((((class color))
+     (:background "LightBlue2" :underline "Yellow")))))
+	 #+END_SRC
+
+    
+*  hook, autoloadの話
+** hook
+   * ファイルの保存、ファイルのオープン時に呼び出される関数
+
+     * hookに関数を追加すれば実行したい時に実行してくれる
+
+   * 例(emacs lispモードの場合は、auto-async-byte-compile マイナーモードを起動さ
+     せる)
+     #+BEGIN_SRC elisp
+       (add-hook 'emacs-lisp-mode-hook 'enable-auto-async-byte-compile-mode)
+     #+END_SRC
+
+** autoload
+   * dynamic link的な何か
+
+     * 関数名だけを登録しておく
+
+     * 使用されるまで、ファイルのロードを行わない(lazy)
+
+   * eval-after-loadと組み合わせて使うとベター
+     
+   * auto-load -> キー割り当て -> 実行 -> ファイルのロード -> 設定
+     
+   * 例(foreign-regexp の設定例)
+     #+BEGIN_SRC elisp
+       (when (locate-library "foreign-regexp")
+         
+         (eval-after-load "foreign-regexp"
+           '(progn
+              (setq foreign-regexp/regexp-type 'perl ; perlの正規表現を使用
+                    reb-re-syntax 'foreign-regexp ; Rebuilderでperlを使用する
+                    ))) 
+         
+         (autoload 'foreign-regexp/query-replace "foreign-regexp" nil t)
+         
+         (global-set-key (kbd "M-%") 'foreign-regexp/query-replace))     
+     #+END_SRC
+
+
+*  カーソル移動系パッケージ
+** cua-mode
+   * [[http://publibfp.boulder.ibm.com/cgi-bin/bookmgr/BOOKS/f29bdg00/CCONTENTS][CUA]](common user access)用のモード
+
+     * CUAに沿ったキーバインドにする
+
+   * 矩形選択機能のみ使用してます
+     
+** sequential-command
+   * 同じキーを二回押した時に二回目の動作を変える
+
+     * C-a, C-e
+
+** point-undo
+   * ポイント(カーソル)の履歴を保存する
+
+     - C-o :: undo
+     - C-x C-o :: redo
+
+** ace jump
+   * 表示中のバッファの好きな場所に飛んでいける
+
+     * 余り使えない？ 慣れたら便利？
+
+   * ace-windowはかなり便利(オススメ)
+
+
+* 文字入力系パッケージ
+** ddskk
+   * 佐藤先生
+
+*  grep系パッケージ
+** color-moccur
+   * moccur-editで編集も可能
+
+   * occurはlispで実装されていて遅い(らしい)
+
+** ack
+   * heml-ack, full-ack
+
+     * ackコマンドを使用 
+
+     * sudo apt-get install ack-grep
+
+       * スーパー牛さんパワーはあります!
+
+         #+BEGIN_SRC sh :results raw
+         apt-get moo
+         #+END_SRC
+
+
+* その他お勧めパッケージ
+** elscreen
+   * タブ化
+
+** pop-win
+   * バッファをポップアップしてくれる
+
+** foregn-regexp
+   * perlの正規表現が使える
+
+** yasnipet
+   * snipetの展開
+
+
+* orgモードの勧め
+  * アウトライナー
+
+  * org-babelの機能でコードスニペットの実行もできる
+    
+  * [[./data/haskell11.html][Html化]]、tex化が可能
+
+  * Memo, Todoリスト
+
+
+* tuareg-modeの設定
+  * そんなにしていない
+
+    * tuareg-browse-libary :: C-:に割り当てている。デフォルトでは割り当てられてい
+         ない?
+
+    * ocamlspot :: みんな入れてますよね:-)
+                  
+    * summarye :: 定義されている関数を一覧で表示
+
+    * flycheck :: on the fly で syntaxチェック
+
+    * electric-case :: snake_caseに(OCamlなのに)
+
+* モードラインの設定
+  * 変数mode-line-formatに値を入れる事でモードの表示が変更可能
+
+** 今日のゴール
+  * nyan cat
+
+* 最後に
+
+  Happy Emacs Programming!!
+	  
+** 参考文献
+   [[http://www.gnu.org/software/emacs/manual/html_mono/elisp.html][Gnu Emacs Lisp Reference Manual]], Free Software Foundation, Inc.
+   [[http://www.gnu.org/software/emacs/manual/html_node/emacs/index.html][Gnu Emacs Manual]], Free Software Foundation, Inc.
+   [[https://www.gnu.org/software/emacs/manual/html_node/eintr/][An Introduction to Programming in Emacs Lisp]], Free Software Foundation, Inc
+   Emacs辞典，佐藤隆一，翔泳社
+   Emacsテクニックバイブル, るびきち, 技術評論社

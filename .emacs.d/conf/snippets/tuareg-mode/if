@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: if
+# key: if
+# binding: C-c . i
+# --
+if $1 then $2 else $3

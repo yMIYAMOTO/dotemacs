@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cases
+# key: C-c . c
+# --
+${1:cases} (${2:$$yas-chose-value("induction" "destruct" "inversion")}) ${3:Case}.

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: define function
+# key: deffun
+# binding: C-c . d
+# --
+let ${1:rec} ${2:fun} ${3:args} = $0

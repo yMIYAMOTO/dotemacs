@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: begin-end
+# key: begin-end
+# binding: C-c . b
+# --
+begin
+  $1
+end

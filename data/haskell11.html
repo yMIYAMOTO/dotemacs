@@ -1,0 +1,711 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<title>Haskell 11章(前半)</title>
+<!-- 2014-05-19 月 08:18 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Yohei MIYAMOTO" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.right  { text-align: center;  }
+  th.left   { text-align: center;   }
+  th.center { text-align: center; }
+  td.right  { text-align: right;  }
+  td.left   { text-align: left;   }
+  td.center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara:nth-child(2) { display: inline; }
+  .footpara { display: block; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="haskell.css" />
+<link rel="stylesheet" type="text/css" href="http://thomasf.github.io/solarized-css/solarized-light.min.css" />
+
+<script type="text/javascript" src="http://thomasf.github.io/solarized-css/org-info.min.js">
+/**
+ *
+ * @source: http://thomasf.github.io/solarized-css/org-info.min.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://thomasf.github.io/solarized-css/org-info.min.js.
+ *
+ * Copyright (C) 2012-2013 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://thomasf.github.io/solarized-css/org-info.min.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "3");
+org_html_manager.set("LINK_HOME", "");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "1");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Haskell 11章(前半)</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">11章</a>
+<ul>
+<li><a href="#sec-1-1">返ってきたファンクター</a>
+<ul>
+<li><a href="#sec-1-1-1">ファンクターとしてのI/Oアクション</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-2">ファンクターとしての関数</a>
+<ul>
+<li><a href="#sec-1-2-1">lifting</a></li>
+</ul>
+</li>
+<li><a href="#sec-1-3">ファンクター則</a>
+<ul>
+<li><a href="#sec-1-3-1">第一法則</a></li>
+<li><a href="#sec-1-3-2">第二法則</a></li>
+<li><a href="#sec-1-3-3">法則を破る</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">11章</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Haskellで多相性を使う場合は、型のインスタンスがどのように振る舞うか
+を考え、型クラスを定義する。
+</li>
+
+<li>ファンクターは関数を使い全体を写す。
+</li>
+
+<li>11章では <b>アプリカティブファンクター</b> を見ていく。
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">返ってきたファンクター</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+ファンクターとは関数で写せるもの(ex. リスト,Maybe,木)。
+</p>
+
+<p>
+型クラスFunctorで表現する。クラスメソッドはfmap。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #87cefa;">fmap</span> (<span style="color: #eedd82;">*</span>2) [1, 2, 3]
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+</colgroup>
+<tbody>
+<tr>
+<td class="right">2</td>
+<td class="right">4</td>
+<td class="right">6</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+ファンクターは <b>文脈</b> を持った値と見做すことができる。
+</p>
+<dl class="org-dl">
+<dt> Maybe </dt><dd>計算が失敗したかもしれない
+</dd>
+<dt> リスト </dt><dd>複数の値を同時に持つ
+</dd>
+</dl>
+
+<p>
+型コンスラクタをファンクターのインスタンスにするには、型コンスタクタ
+の種類は*-&gt;*である必要がある。つまり、型変数として具体型を一つだ
+けとる。
+</p>
+
+<p>
+Eitherは二つ型変数をとるので、型コンストラクタに1つ引数を部分適用す
+る。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #00ffff;">instance</span> <span style="color: #98fb98;">Functor</span> (<span style="color: #98fb98;">Either</span> a) <span style="color: #00ffff;">where</span> 
+  fmap f (<span style="color: #98fb98;">Just</span> x) <span style="color: #eedd82;">=</span> <span style="color: #98fb98;">Just</span> (f x)
+  fmap f <span style="color: #98fb98;">Nothing</span> <span style="color: #eedd82;">=</span> <span style="color: #98fb98;">Nothing</span>
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1">ファンクターとしてのI/Oアクション</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+型IO Stringは、実行すると文字列を取ってきてそれを返すようなI/Oアク
+ション。
+</p>
+
+<p>
+<i>do</i> 記法の中で <i>&lt;-</i> 構文を使い束縛する。
+<i>return</i> は特に仕事を行わず、ただ何かを結果として提示するI/Oアクション。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #00ffff;">instance</span> <span style="color: #98fb98;">Functor</span> <span style="color: #98fb98;">IO</span> <span style="color: #00ffff;">where</span>
+  fmap f action <span style="color: #eedd82;">=</span> <span style="color: #00ffff;">do</span>
+        result <span style="color: #eedd82;">&lt;-</span> action
+        return (f result)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #87cefa;">main</span> <span style="color: #eedd82;">=</span> <span style="color: #00ffff;">do</span> line <span style="color: #eedd82;">&lt;-</span> getLine
+           <span style="color: #00ffff;">let</span> line' <span style="color: #eedd82;">=</span> reverse line
+                   putStrLn <span style="color: #eedd82;">$</span> <span style="color: #ffa07a;">"You said "</span> <span style="color: #eedd82;">++</span> line' <span style="color: #eedd82;">++</span> <span style="color: #ffa07a;">" backwards!"</span>
+                   putStrLn <span style="color: #eedd82;">$</span> <span style="color: #ffa07a;">"Yes, you said "</span> <span style="color: #eedd82;">++</span> line' <span style="color: #eedd82;">++</span> <span style="color: #ffa07a;">" backwards!"</span>
+</pre>
+</div>
+
+<p>
+上のコードは <i>fmap</i> を使うと以下のように書ける。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #87cefa;">main</span> <span style="color: #eedd82;">=</span> <span style="color: #00ffff;">do</span> line <span style="color: #eedd82;">&lt;-</span> fmap reverse getLine
+                  putLine <span style="color: #eedd82;">$</span> <span style="color: #ffa07a;">"You said "</span> <span style="color: #eedd82;">++</span> line <span style="color: #eedd82;">++</span> <span style="color: #ffa07a;">" backwards!"</span>
+                  putLine <span style="color: #eedd82;">$</span> <span style="color: #ffa07a;">"Yes, you really said "</span> <span style="color: #eedd82;">++</span> line <span style="color: #eedd82;">++</span> <span style="color: #ffa07a;">" backwards!"</span>
+</pre>
+</div>
+
+<p>
+<i>fmap</i> により <i>getLine</i> で取ってきた値に <i>reverse</i> を適用している。
+</p>
+
+<p>
+例えば、 <i>fmap (++"!") getLine</i> は入力された文字列の最後に"!"を付ける。
+</p>
+
+<p>
+ファンクターの中身を1つではなく複数の関数で写したい時は、関数合成を使うのが一番良い。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #00ffff;">import</span> <span style="color: #98fb98;">Data.Char</span>
+<span style="color: #00ffff;">import</span> <span style="color: #98fb98;">Data.List</span>
+
+<span style="color: #87cefa;">main</span> <span style="color: #eedd82;">=</span> <span style="color: #00ffff;">do</span> line <span style="color: #eedd82;">&lt;-</span> fmap (intersperse <span style="color: #ffa07a;">'-'</span> <span style="color: #eedd82;">.</span> reverse <span style="color: #eedd82;">.</span> map toUpper) getLine
+                                  <span style="color: #00ff00;">-- </span><span style="color: #00ff00;">(\xs -&gt; intersperse '-' (reverse (map toUpper x)))&#12392;&#21516;&#12376; </span>
+                  putStrLn line
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">ファンクターとしての関数</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+関数の型を表わす <i>r -&gt; a</i> は <i>(-&gt;) r a</i> と書き換えることができる。
+</p>
+
+<p>
+関数はFunctorのインスタンスで、Control.Monad.Instancesには以下のよう
+な関数のインスタンス宣言がある。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #00ffff;">instance</span> <span style="color: #98fb98;">Functor</span> ((<span style="color: #eedd82;">-&gt;</span>) r) <span style="color: #00ffff;">where</span>
+  fmap f g <span style="color: #eedd82;">=</span> (<span style="color: #eedd82;">\</span>x <span style="color: #eedd82;">-&gt;</span> f (g x))
+</pre>
+</div>
+
+<p>
+この <i>((-&gt;) r)</i> を <i>fmap</i> の型に入れ、関数型を中置記法に書き直すとる
+と、 <code>fmap :: (a -&gt; b) -&gt; (r -&gt; a) -&gt; (r -&gt; b)</code> となる。この型はaか
+らbへの関数と、rからaへの関数を受け取り、rからbへの関数を返す関数に
+なっていて、関数合成になっている。 すなわち、 <b>関数合成はファンクター
+のインスタンス</b> 。以下のように書くことができる。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #00ffff;">instance</span> <span style="color: #98fb98;">Functor</span> ((<span style="color: #eedd82;">-&gt;</span>) r) <span style="color: #00ffff;">where</span>
+  fmap <span style="color: #eedd82;">=</span> (<span style="color: #eedd82;">.</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span class="linenr">1: </span><span style="color: #98fb98;">:</span>m <span style="color: #eedd82;">+</span> <span style="color: #98fb98;">Control.Monad.Instances</span>
+<span class="linenr">2: </span>
+<span class="linenr">3: </span><span style="color: #98fb98;">:</span>t fmap (<span style="color: #eedd82;">*</span>3) (<span style="color: #eedd82;">+</span>100)
+<span class="linenr">4: </span><span style="color: #87cefa;">fmap</span> (<span style="color: #eedd82;">*</span>3) (<span style="color: #eedd82;">+</span>100) 1
+<span class="linenr">5: </span>(<span style="color: #eedd82;">*</span>3) <span style="color: #eedd82;">`fmap`</span> (<span style="color: #eedd82;">+</span>100) <span style="color: #eedd82;">$</span> 1
+<span class="linenr">6: </span>(<span style="color: #eedd82;">*</span>3) <span style="color: #eedd82;">.</span> (<span style="color: #eedd82;">+</span>100) <span style="color: #eedd82;">$</span> 1
+<span class="linenr">7: </span><span style="color: #87cefa;">fmap</span> (show <span style="color: #eedd82;">.</span> (<span style="color: #eedd82;">*</span>3)) (<span style="color: #eedd82;">+</span>100) 1
+<span class="linenr">8: </span>0
+</pre>
+</div>
+
+<pre class="example">
+Prelude Control.Monad.Instances&gt; fmap (*3) (+100) :: Num a =&gt; a -&gt; a
+303
+303
+303
+303
+</pre>
+
+<p>
+関数ファンクターも文脈を持った値と見做せ、関数ファンクター <i>(-&gt;) r</i>
+は、「r型の入力を適用すれば結果が返ってくる」という文脈を持つ。
+</p>
+
+<p>
+関数 <code>(+3) :: Int -&gt; Int</code> は、「結果が欲ければInt型に適用しろ」とい
+う文脈をもつ。
+</p>
+</div>
+
+<div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1">lifting</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+<i>fmap</i> の型を考えると、 <code>fmap :: (a -&gt; b) -&gt; (f a -&gt; f b)</code> は「ファ
+ンクター値を取り、ファンクター値を返す関数」を返す関数と見ることが
+できる。このような操作を <b>持ち上げ(lifting)</b> と呼ぶ。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #98fb98;">:</span>t fmap (<span style="color: #eedd82;">*</span>2)
+<span style="color: #98fb98;">:</span>t fmap (replicate 3)
+0
+</pre>
+</div>
+
+<pre class="example">
+fmap (*2) :: (Functor f, Num b) =&gt; f b -&gt; f b
+fmap (replicate 3) :: Functor f =&gt; f a -&gt; f [a]
+</pre>
+
+<p>
+式 <i>fmap (*2)</i> は数が入っているファンクターfを受け取って、数が入っ
+ているファンクターを返す関数。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span class="linenr">1: </span><span style="color: #00ff00;">--</span><span style="color: #00ff00;">&#21336;&#30456;&#24615;&#21046;&#38480;&#12434;&#35299;&#38500;</span>
+<span class="linenr">2: </span><span style="color: #98fb98;">:</span>set <span style="color: #eedd82;">-</span><span style="color: #98fb98;">XNoMonomorphismRestriction</span> 
+<span class="linenr">3: </span>
+<span class="linenr">4: </span><span style="color: #00ffff;">let</span> shout <span style="color: #eedd82;">=</span> fmap (<span style="color: #eedd82;">++</span><span style="color: #ffa07a;">"!"</span>);
+<span class="linenr">5: </span>
+<span class="linenr">6: </span><span style="color: #98fb98;">:</span>t shout
+<span class="linenr">7: </span>
+<span class="linenr">8: </span><span style="color: #87cefa;">shout</span> [<span style="color: #ffa07a;">"ha"</span>, <span style="color: #ffa07a;">"ka"</span>, <span style="color: #ffa07a;">"ha"</span>, <span style="color: #ffa07a;">"no"</span>]
+<span class="linenr">9: </span>0
+</pre>
+</div>
+
+<pre class="example">
+Prelude Control.Monad.Instances&gt; Prelude Control.Monad.Instances&gt; Prelude Control.Monad.Instances&gt; Prelude Control.Monad.Instances&gt; shout :: Functor f =&gt; f [Char] -&gt; f [Char]
+Prelude Control.Monad.Instances&gt; ["ha!","ka!","ha!","no!"]
+</pre>
+
+<p>
+よって、 <i>fmap</i> は二通りの考え方ができる。
+</p>
+
+<ul class="org-ul">
+<li><i>fmap</i> は関数とファンクター値を取って、その関数でファンクター値を
+写して返す
+</li>
+
+<li><i>fmap</i> は値から値への関数を受け取って、それをファンクター値からファ
+ンクター値への関数に持ち上げたものを返す関数
+</li>
+</ul>
+
+<p>
+関数 <i>fmap (replicate 3)</i> は、型から分かるようにどんなファンクター
+にでも適用可能。リストに対して適用したら、リスト向の <i>fmap</i> の実装
+が選ばれて、 <i>map</i> が適用される。 <i>Maybe a</i> に対しては、 <i>Just</i> の
+中の値に対して <i>replicate 3</i> が適用される。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span class="linenr">1: </span><span style="color: #87cefa;">fmap</span> (replicate 3) [1, 2, 3, 4]
+<span class="linenr">2: </span><span style="color: #87cefa;">fmap</span> (replicate 3) (<span style="color: #98fb98;">Just</span> 4)
+<span class="linenr">3: </span><span style="color: #87cefa;">fmap</span> (replicate 3) (<span style="color: #98fb98;">Right</span> <span style="color: #ffa07a;">"blah"</span>)
+<span class="linenr">4: </span><span style="color: #87cefa;">fmap</span> (replicate 3) <span style="color: #98fb98;">Nothing</span>
+<span class="linenr">5: </span><span style="color: #87cefa;">fmap</span> (replicate 3) (<span style="color: #98fb98;">Left</span> <span style="color: #ffa07a;">"foo"</span>)
+<span class="linenr">6: </span>0
+</pre>
+</div>
+
+<pre class="example">
+[[1,1,1],[2,2,2],[3,3,3],[4,4,4]]
+Just [4,4,4]
+Right ["blah","blah","blah"]
+Nothing
+Left "foo"
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">ファンクター則</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+ファンクターの性質や挙動は一定の法則( <b>ファンクター則</b> )に従う事になっ
+ている。
+</p>
+
+<p>
+Haskellにはファンクター則を課してくれる機能はないので、自分でテスト
+する必要がある。
+</p>
+</div>
+
+<div id="outline-container-sec-1-3-1" class="outline-4">
+<h4 id="sec-1-3-1">第一法則</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+第一法則は、 <b>idでファンクター値を写した場合、ファンクター値が変化
+してはいけない</b> 。式で書くと <i>fmap id = id</i> 。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #87cefa;">fmap</span> id (<span style="color: #98fb98;">Just</span> 3)
+<span style="color: #87cefa;">id</span> (<span style="color: #98fb98;">Just</span> 3)
+
+<span style="color: #87cefa;">fmap</span> id [1<span style="color: #eedd82;">..</span>5]
+<span style="color: #87cefa;">id</span> [1<span style="color: #eedd82;">..</span>5]
+
+<span style="color: #87cefa;">fmap</span> id <span style="color: #98fb98;">[]</span>
+
+<span style="color: #87cefa;">fmap</span> id <span style="color: #98fb98;">Nothing</span>
+0
+</pre>
+</div>
+
+<p>
+=Just 3
+Just 3
+Prelude Control.Monad.Instances&gt; [1,2,3,4,5]
+[1,2,3,4,5]
+Prelude Control.Monad.Instances&gt; []
+Prelude Control.Monad.Instances&gt; Nothing
+=    
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-3-2" class="outline-4">
+<h4 id="sec-1-3-2">第二法則</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+第二法則は、 <b>「fとgの合成関数でファンクタの値を写したもの」と「ま
+ずg、次にfでファンクター値を写したもの」が等しい</b> 。式で書くと、ファ
+ンクター値xに対し、 <i>fmap (f .g) x = fmap f . (fmap g x)</i> 。
+</p>
+
+<p>
+二つの法則をファンクターに課している理由は、 <i>fmap</i> を使用した時に
+関数の素直な拡張であるファンクターとして振る舞うようにするため。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3-3" class="outline-4">
+<h4 id="sec-1-3-3">法則を破る</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<p>
+カンウンタを持ったMaybeのCMaybe型を定義する。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #00ffff;">data</span> <span style="color: #98fb98;">CMaybe</span> a <span style="color: #eedd82;">=</span> <span style="color: #98fb98;">CNothing</span> <span style="color: #eedd82;">|</span> <span style="color: #98fb98;">CJust</span> <span style="color: #98fb98;">Int</span> a <span style="color: #00ffff;">deriving</span> (<span style="color: #98fb98;">Show</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span class="linenr">1: </span><span style="color: #98fb98;">CNothing</span>
+<span class="linenr">2: </span><span style="color: #98fb98;">CJust</span> 0 <span style="color: #ffa07a;">"haha"</span>
+<span class="linenr">3: </span><span style="color: #98fb98;">:</span>t <span style="color: #98fb98;">CNothing</span>
+<span class="linenr">4: </span><span style="color: #98fb98;">:</span>t <span style="color: #98fb98;">CJust</span> 0 <span style="color: #ffa07a;">"haha"</span>
+<span class="linenr">5: </span><span style="color: #98fb98;">CJust</span> 100 [1, 2, 3]
+<span class="linenr">6: </span>0
+</pre>
+</div>
+
+<pre class="example">
+CNothing
+CJust 0 "haha"
+CNothing :: CMaybe a
+CJust 0 "haha" :: CMaybe [Char]
+CJust 100 [1,2,3]
+</pre>
+
+<p>
+CMaybeをFunctorのインスタンスにする。 <i>fmap</i> の呼び出し回数をカウン
+タで保持する。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span style="color: #98fb98;">:</span>{
+<span style="color: #00ffff;">instance</span> <span style="color: #98fb98;">Functor</span> <span style="color: #98fb98;">CMaybe</span> <span style="color: #00ffff;">where</span>
+  fmap f <span style="color: #98fb98;">CNothing</span> <span style="color: #eedd82;">=</span> <span style="color: #98fb98;">CNothing</span>
+  fmap f (<span style="color: #98fb98;">CJust</span> counter x) <span style="color: #eedd82;">=</span> <span style="color: #98fb98;">CJust</span> (counter<span style="color: #eedd82;">+</span>1) (f x)
+<span style="color: #98fb98;">:</span>}
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span class="linenr">1: </span><span style="color: #87cefa;">fmap</span> (<span style="color: #eedd82;">++</span><span style="color: #ffa07a;">"ha"</span>) (<span style="color: #98fb98;">CJust</span> 0 <span style="color: #ffa07a;">"ho"</span>)
+<span class="linenr">2: </span><span style="color: #87cefa;">fmap</span> (<span style="color: #eedd82;">++</span><span style="color: #ffa07a;">"he"</span>) (fmap (<span style="color: #eedd82;">++</span><span style="color: #ffa07a;">"ha"</span>) (<span style="color: #98fb98;">CJust</span> 0 <span style="color: #ffa07a;">"ho"</span>))
+<span class="linenr">3: </span><span style="color: #87cefa;">fmap</span> (<span style="color: #eedd82;">++</span><span style="color: #ffa07a;">"blah"</span>) <span style="color: #98fb98;">CNothing</span>
+<span class="linenr">4: </span>0
+</pre>
+</div>
+
+<pre class="example">
+CJust 1 "hoha"
+CJust 2 "hohahe"
+CNothing
+</pre>
+
+
+<p>
+CMaybeがファンクター則を満たしていない事を示す。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-haskell"><span class="linenr">1: </span><span style="color: #87cefa;">fmap</span> id (<span style="color: #98fb98;">CJust</span> 0 <span style="color: #ffa07a;">"haha"</span>)
+<span class="linenr">2: </span><span style="color: #87cefa;">id</span> (<span style="color: #98fb98;">CJust</span> 0 <span style="color: #ffa07a;">"haha"</span>)
+<span class="linenr">3: </span>0
+</pre>
+</div>
+
+<pre class="example">
+CJust 1 "haha"
+CJust 0 "haha"
+</pre>
+
+<p>
+ファンクター第一法則を満していない。ファンクター則を満たしていない
+ため、CMaybeをファンクターとして利用するコードはバグを生じる可能性
+がある。
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Yohei MIYAMOTO</p>
+<p class="date">Created: 2014-05-19 月 08:18</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.1 (<a href="http://orgmode.org">Org</a> mode 8.2.6)</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

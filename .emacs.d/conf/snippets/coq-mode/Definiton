@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Definiton
+# key: Definiton
+# binding: C-c . d
+# --
+Definition $1 $2 : $3 := $4.
+$0

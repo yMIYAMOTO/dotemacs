@@ -1,0 +1,5 @@
+/.org-id-locations
+/auto-save-list
+/.#init.el
+# meldがマージする際に生成するファイル
+*.orig	
